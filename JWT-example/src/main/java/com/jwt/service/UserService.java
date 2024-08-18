@@ -1,6 +1,8 @@
 package com.jwt.service;
 
-import com.jwt.model.User;
+import com.jwt.entity.User;
+import com.jwt.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,15 +12,17 @@ import java.util.UUID;
 @Service
 public class UserService {
 
-    private List<User> users = new ArrayList<>();
-
-    public UserService() {
-        users.add(new User(UUID.randomUUID().toString(),"Ajay Kuthe","ajay@gmail.com"));
-        users.add(new User(UUID.randomUUID().toString(),"Apoorwa Kuthe","appi@gmail.com"));
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     public List<User> getUsers(){
 
-        return this.users;
+        return this.userRepository.findAll();
+    }
+
+    public User createUser(User user){
+
+        user.setUserId(UUID.randomUUID().toString());
+        return userRepository.save(user);
     }
 }
